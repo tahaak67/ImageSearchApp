@@ -11,9 +11,10 @@ import com.codinginflow.imagesearchapp.R
 import com.codinginflow.imagesearchapp.data.ResultsItem
 import com.codinginflow.imagesearchapp.databinding.ItemUnsplashPhotoBinding
 
-class GalleryAdapter : PagingDataAdapter<ResultsItem, GalleryAdapter.PhotoViewHolder>(
-    PHOTO_COMPARATOR
-) {
+class GalleryAdapter(private val listener: OnItemClickListener) :
+    PagingDataAdapter<ResultsItem, GalleryAdapter.PhotoViewHolder>(
+        PHOTO_COMPARATOR
+    ) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
@@ -31,8 +32,21 @@ class GalleryAdapter : PagingDataAdapter<ResultsItem, GalleryAdapter.PhotoViewHo
     }
 
 
-    class PhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
+    inner class PhotoViewHolder(private val binding: ItemUnsplashPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+                    if (item != null) {
+                        listener.onItemClick(item)
+                    }
+                }
+
+            }
+        }
 
         fun bind(photo: ResultsItem) {
             binding.apply {
@@ -46,6 +60,10 @@ class GalleryAdapter : PagingDataAdapter<ResultsItem, GalleryAdapter.PhotoViewHo
                 textViewUserName.text = photo.user?.username
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(photo: ResultsItem)
     }
 
     companion object {

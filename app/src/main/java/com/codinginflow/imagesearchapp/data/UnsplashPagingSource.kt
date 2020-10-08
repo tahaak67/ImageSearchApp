@@ -24,13 +24,13 @@ class UnsplashPagingSource(
                 prevKey = if (position == UNSPLASH_STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = if (photos.isEmpty()) null else position + 1
             )
-        } catch (ex: Exception) {
-            Log.i("test","${ex.message} cause ${ex}")
+        } catch (ex: IOException) {
+            Log.i("test", "${ex.message} cause ${ex}")
             LoadResult.Error(ex)
 
-        } /*catch (ex: HttpException) {
+        } catch (ex: HttpException) {
             LoadResult.Error(ex)
-        }*/
+        }
 
     }
 }

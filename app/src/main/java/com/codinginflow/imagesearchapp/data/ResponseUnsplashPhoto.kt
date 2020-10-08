@@ -1,6 +1,8 @@
 package com.codinginflow.imagesearchapp.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
 data class ResponseUnsplashPhoto(
@@ -15,10 +17,8 @@ data class ResponseUnsplashPhoto(
 	val results: List<ResultsItem>
 )
 
+@Parcelize
 data class User(
-
-	@field:SerializedName("profile_image")
-	val profileImage: ProfileImage? = null,
 
 	@field:SerializedName("name")
 	val name: String? = null,
@@ -46,14 +46,12 @@ data class User(
 
 	@field:SerializedName("username")
 	val username: String? = null
-) {
+) : Parcelable {
 	val attributionUrl get() = "https://unsplash.com/$username?utm_source=ImageSearchApp_medium=referral"
 }
 
+@Parcelize
 data class ResultsItem(
-
-	@field:SerializedName("current_user_collections")
-	val currentUserCollections: List<Any?>? = null,
 
 	@field:SerializedName("color")
 	val color: String? = null,
@@ -90,8 +88,9 @@ data class ResultsItem(
 
 	@field:SerializedName("likes")
 	val likes: Int? = null
-)
+) : Parcelable
 
+@Parcelize
 data class Links(
 
 	@field:SerializedName("self")
@@ -108,8 +107,9 @@ data class Links(
 
 	@field:SerializedName("download")
 	val download: String? = null
-)
+) : Parcelable
 
+@Parcelize
 data class Urls(
 
 	@field:SerializedName("small")
@@ -126,7 +126,7 @@ data class Urls(
 
 	@field:SerializedName("full")
 	val full: String? = null
-)
+) : Parcelable
 
 data class ProfileImage(
 
