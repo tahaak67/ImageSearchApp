@@ -5,11 +5,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import com.codinginflow.imagesearchapp.R
 import com.codinginflow.imagesearchapp.data.ResultsItem
 import com.codinginflow.imagesearchapp.databinding.FragmentGalleryBinding
@@ -29,7 +29,7 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery), GalleryAdapter.OnIt
         _binding = FragmentGalleryBinding.bind(view)
         val adapter = GalleryAdapter(this)
         binding.apply {
-            recyclerView.setHasFixedSize(true)
+            //recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = PhotoLoadStateAdapter { adapter.retry() },
                 footer = PhotoLoadStateAdapter { adapter.retry() }
@@ -37,6 +37,16 @@ class GalleryFragment : Fragment(R.layout.fragment_gallery), GalleryAdapter.OnIt
             buttonRetry.setOnClickListener {
                 adapter.retry()
             }
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        countNumber.isVisible = true
+                    } else {
+                        countNumber.isVisible = false
+                    }
+                }
+            })
         }
         viewModel.photos.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)

@@ -27,7 +27,7 @@ class GalleryAdapter(private val listener: OnItemClickListener) :
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val currentItem = getItem(position)
         if (currentItem != null) {
-            holder.bind(currentItem)
+            holder.bind(currentItem, position)
         }
     }
 
@@ -48,8 +48,13 @@ class GalleryAdapter(private val listener: OnItemClickListener) :
             }
         }
 
-        fun bind(photo: ResultsItem) {
+        fun bind(photo: ResultsItem, place: Int) {
             binding.apply {
+                /*when(place){
+                    0-> countTextView.isVisible = true
+                        else-> countTextView.isVisible = false
+                }*/
+                countTextView.isVisible = false
                 Glide.with(itemView)
                     .load(photo.urls?.regular)
                     .centerCrop()
